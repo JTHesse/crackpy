@@ -20,7 +20,7 @@ variables:
 before_script:
   # Initialize and activate virtual environment
   - which virtualenv
-  - virtualenv --python=/opt/anaconda3/bin/python venv
+  - virtualenv --python=python3.12 venv
   - source venv/bin/activate
   # Install required packages
   - pip install --upgrade pip
@@ -59,13 +59,6 @@ lint_crack_detection:
     - pip install pylint --quiet
     - pylint crackpy/crack_detection --rcfile='.pylintrc'
 #    - pylint crackpy/tests/test_crack_detection --rcfile='.pylintrc'
-
-lint_dic:
-  stage: Static Code Analysis
-  allow_failure: true
-  script:
-    - pip install pylint --quiet
-    - pylint crackpy/dic_control --rcfile='.pylintrc'
 
 
 # Run Unit Tests
