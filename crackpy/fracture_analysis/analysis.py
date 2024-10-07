@@ -111,7 +111,7 @@ class FractureAnalysis:
             self.tick_sizes = []
             self.num_of_path_nodes = []
 
-    def run(self, progress=None, task_id=None):
+    def run(self, progress='off', task_id=None):
         """Run fracture analysis with the provided data, crack_tip_info, and integral_properties.
         Results are stored as class instance attributes 'results', 'sifs', 'int_sizes', and 'path_nodes'.
 
@@ -145,7 +145,7 @@ class FractureAnalysis:
 
             except:
                 print('CJP optimization failed.')
-                self.res_cjp = None
+                self.res_cjp = {'Error': np.nan, 'K_F': np.nan, 'K_R': np.nan, 'K_S': np.nan, 'K_II': np.nan, 'T': np.nan}
 
             try:
                 # calculate Williams coefficients with fitting method
@@ -161,12 +161,13 @@ class FractureAnalysis:
                 K_II = -np.sqrt(2 * np.pi) * self.williams_fit_b_n[1] / np.sqrt(1000)
                 T = 4 * self.williams_fit_a_n[2]
 
-                self.sifs_fit = {'Error': williams_results.cost,
-                                 'K_I': K_I, 'K_II': K_II, 'T': T}
+                self.sifs_fit = {'Error': williams_results.cost, 'K_I': K_I, 'K_II': K_II, 'T': T}
 
             except:
                 print('Williams optimization failed.')
-                self.sifs_fit = None
+                self.williams_fit_a_n = {n: np.nan for index, n in enumerate(self.optimization.terms)}
+                self.williams_fit_b_n = {n: np.nan for index, n in enumerate(self.optimization.terms)}
+                self.sifs_fit = {'Error': np.nan, 'K_I': np.nan, 'K_II': np.nan, 'T': np.nan}
 
         if self.integral_properties is not None:
             # calculate Williams coefficients with Bueckner-Chen integral method
@@ -215,7 +216,7 @@ class FractureAnalysis:
                 current_size_top += self.integral_properties.paths_distance_top
 
                 # Update progress bar
-                if progress is not None and not "off":
+                if progress != "off":
                     progress[task_id] = {"progress": n + 1, "total": self.integral_properties.number_of_paths}
 
             # catch RuntimeWarnings originating from np.nanmean having no valid values

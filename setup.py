@@ -18,7 +18,7 @@ setuptools.setup(
                  'crackpy.tests*,'
                  'example_images']
     ),
-    description='(To)olkit for (M)echanical Testing',
+    description='Crack Analysis Tool in Python - CrackPy',
     author='DLR',
     license='MIT',
     include_package_data=True,
@@ -27,11 +27,10 @@ setuptools.setup(
         'numpy>=1.23.2',
         'opencv_python>=4.5.4.60',
         'pandas>=1.4.3',
-        'Pillow>=9.2.0',
+        'pyvista>=0.37.0',
         'scikit_image>=0.19.3',
         'scikit_learn>=1.1.2',
         'scipy>=1.9.0',
-        'seaborn>=0.11.2',
         'rich>=12.5.1'
     ]
 )
